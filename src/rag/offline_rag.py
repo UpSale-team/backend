@@ -55,11 +55,12 @@ class Offline_RAG:
         PromptTemplate: The prompt template used to generate LLM answers.
         """
         template = """
+        
         You are a sales assistant with access to the following information from a product sales CSV dataset:
         
         {context}
         
-        Based on this information, answer the following question in detail:
+        Based on this information, answer the following question in detail and with the language that user asking:
         
         {question}
         

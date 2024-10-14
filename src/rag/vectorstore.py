@@ -1,13 +1,13 @@
 from typing import Union
 from langchain_chroma import Chroma
 from langchain_community.vectorstores import FAISS 
-from langchain_community.embeddings.spacy_embeddings import SpacyEmbeddings
+from langchain_community.embeddings import SentenceTransformerEmbeddings
 
 class VectorDB:
     def __init__(self,
                  documents: None,
                  vector_db: Union[Chroma, FAISS] = Chroma,
-                 embedding = SpacyEmbeddings(model_name= 'xx_ent_wiki_sm')
+                 embedding = SentenceTransformerEmbeddings(),
                  ) -> None :
         self.vector_db = vector_db
         self.embedding =embedding
@@ -21,7 +21,7 @@ class VectorDB:
     def get_retriever(self,
                       search_type: str = 'similarity',
                       search_kwargs: dict = {"k": 10}):
-        retriever = self.db.get_retriever(search_type=search_type,
+        retriever = self.db.as_retriever(search_type=search_type,
                                           search_kwargs=search_kwargs)
         return retriever
 

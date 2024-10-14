@@ -3,25 +3,25 @@ import glob
 from tqdm import tqdm
 import multiprocessing
 import pandas as pd
-from langchain_community.document_loaders import CSVLoader as LangchainCSVLoader
-from langchain.schema import Document
+from langchain_community.document_loaders import CSVLoader
 
 
 # Helper function to remove non-UTF-8 characters from text
 def remove_non_utf8_characters(text: str) -> str:
-    return " ".join([char for char in text if ord(char) < 128])
+    # Only remove characters that are not ASCII (if this is your requirement)
+    return "".join([char for char in text if char.isprintable()])
 
 
 # Function to load a single CSV and clean its content
 def load_csv(csv_file: str):
-    csv_loader = LangchainCSVLoader(csv_file)
-    csvs = csv_loader.load()
+    loader = CSVLoader(csv_file,encoding="ISO-8859-1")
+    docs = loader.load()
 
     # Clean CSV page content by removing non-UTF-8 characters
-    for csv in csvs:
-        csv.page_content = remove_non_utf8_characters(csv.page_content)
+    for doc in docs:
+        doc.page_content = remove_non_utf8_characters(doc.page_content)
 
-    return csvs  # Trả về danh sách các Document
+    return docs  # Trả về danh sách các Document
 
 
 # Class for splitting CSV data into chunks (rows)

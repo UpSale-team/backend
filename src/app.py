@@ -6,6 +6,7 @@ from langserve import add_routes
 from src.base.model import get_llm
 from src.rag.main import build_rag_chain, InputQA, OutputQA
 
+chat_history = []
 
 llm = get_llm()
 csv_dir ="D:/Hoc_Hoang/EXE201/UpSale/Data_Source"
@@ -22,7 +23,7 @@ app = FastAPI(
     version="0.1"
 )
 
-app.middleware(
+app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
     allow_credentials=True,
